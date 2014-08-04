@@ -1,0 +1,42 @@
+=========================================
+“<%= @handle %>”　<%= @name %>
+-----------------------------------------
+▼パーソナリティ
+性別：<%= @gender %>
+年齢：<%= age_inspect %>
+所属：<%= @organization %>
+
+▼スタイル
+ <%= style_name_inspect %>
+
+▼能力値／制御値
+<% ability_inspect.each do |ability| %>
+ <%= ability %>
+<% end %>
+
+▼一般技能
+<% skills.select{|e|e.type == ORDINAL}.each do |skill| %>
+ <%= skill.inspect %>
+<% end %>
+
+▼特技
+<% skills.select{|e|e.type != ORDINAL}.each do |skill| %>
+ <%= skill.inspect %>
+<% end %>
+<% pregroup = "" %>
+<% pretype = "" %>
+<% outfit_inspect.each do |outfit| %>
+<% if pregroup != outfit.group %>
+<% pregroup = outfit.group %>
+
+▼<%= outfit.group %>
+<% end %>
+<% if pretype != outfit.type %>
+<% pretype = outfit.type %>
+・<%= outfit.type %>
+<% end %>
+  <%= outfit.inspect %>
+<% end %>
+
+
+▼戦闘プラン
