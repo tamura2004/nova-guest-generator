@@ -113,15 +113,15 @@ class Guest
 	end
 end
 
-open("ayakashi_list.txt","w") do |outfile|
-	count = 0
-	while count < 100
-		guest = Guest.new
-		next if !guest.style_names.include?("アヤカシ")
-		outfile.puts guest.inspect
-		count += 1
-	end
-end
+# open("ayakashi_list.txt","w") do |outfile|
+# 	count = 0
+# 	while count < 100
+# 		guest = Guest.new
+# 		next if !guest.style_names.include?("アヤカシ")
+# 		outfile.puts guest.inspect
+# 		count += 1
+# 	end
+# end
 # end
 #puts Guest.new.inspect
 #puts Outfit.generate(["ヒルコ"]).inspect
