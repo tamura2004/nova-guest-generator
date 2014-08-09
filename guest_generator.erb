@@ -1,10 +1,11 @@
-=========================================
-“<%= @handle %>”　<%= @name %>
+========================================
+ <%= @name.inspect %>
 -----------------------------------------
 ▼パーソナリティ
-性別：<%= @gender %>
+性別：<%= @name.gender %>
 年齢：<%= age_inspect %>
 所属：<%= @organization %>
+消費経験点：２２０
 
 ▼スタイル
  <%= style_name_inspect %>
@@ -13,6 +14,8 @@
 <% ability_inspect.each do |ability| %>
  <%= ability %>
 <% end %>
+
+ ＣＳ：<%= ((@ability[0]+@ability[2]+@ability[4])/2).to_zen %>
 
 ▼一般技能
 <% skills.select{|e|e.type == ORDINAL}.each do |skill| %>
@@ -25,7 +28,7 @@
 <% end %>
 <% pregroup = "" %>
 <% pretype = "" %>
-<% outfit_inspect.each do |outfit| %>
+<% @outfits.inspect.each do |outfit| %>
 <% if pregroup != outfit.group %>
 <% pregroup = outfit.group %>
 
