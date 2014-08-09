@@ -2,7 +2,10 @@
 source "https://rubygems.org"
 
 gem "sinatra"
-gem "rspec"
-gem "guard"
-gem "guard-rspec"
+
+group :development do
+	gem "rspec"
+	gem "guard"
+	gem "guard-rspec"
+end
 # gem "rails"
