@@ -10,7 +10,6 @@ require "./outfit.rb"
 RULES = YAML.load(open "guest_styles.yaml","r:utf-8")
 TEMPLATE = open("guest_generator.erb","r:utf-8").read
 
-BASE_SKILLS = ["射撃","心理","自我","回避","操縦","白兵","圧力","信用"]
 
 ORGANIZATIONS = ["軌道千早","イワサキ・グループ","テラウェア","ヘイロン","ＣＦＣ","セフィロト","カーライル","川渡連合","三合会","NOVA軍","氷の静謐","フェスラー公国","ヒラサカ","ＢＩＯＳ","トライアンフ","ミカヅチ部隊","羅生門","岩崎御庭番集","ナンバーズ","マーダー・インク","魔会","キャノンボール","真教浄化派","真教浄化派","真教浄化派","真教浄化派","フリーランス","フリーランス","フリーランス"]
 
@@ -39,20 +38,22 @@ class Guest
 
 	ABILITY_LABEL = %w(理性 感情 生命 外界)
 
-	def initialize
-		@handle = ""
-		@gender = ""
-		@organization = ""
-		@name = ""
-		@style_names = [nil,nil,nil]
-		@key = 0
-		@parsona = 0
-		@ability = [0,0,0,0,0,0,0,0]
-		@skills = []
-		@outfits = []
-	end
+	attr_reader :style_names
 
-	def generate
+	def initialize
+	# 	@handle = ""
+	# 	@gender = ""
+	# 	@organization = ""
+	# 	@name = ""
+	# 	@style_names = [nil,nil,nil]
+	# 	@key = 0
+	# 	@parsona = 0
+	# 	@ability = [0,0,0,0,0,0,0,0]
+	# 	@skills = []
+	# 	@outfits = []
+	# end
+
+	# def generate
 		# パーソナリティ
 		@name = Name.new
 		@organization = ORGANIZATIONS.sample
@@ -64,8 +65,8 @@ class Guest
 		@parsona = rand(3)
 
 		# 年齢
-		@age = rand(20)+14
-		@age **= (rand(5)+1) if @style_names.include?("アヤカシ")
+		@age = (rand(20)+14).to_zen
+		@age = rand(1000).to_zen + ["","万","億","兆"].sample if @style_names.include?("アヤカシ")
 
 		# 能力値
 		@ability = [0,0,0,0,0,0,0,0]
@@ -74,8 +75,8 @@ class Guest
 			add_ability style[ABILITY]
 		end
 
-		@skills = Skill.generate(@styles)
-		@outfits = Outfit.generate(@styles)
+		@skills = Skill.generate(@style_names)
+		@outfits = Outfit.generate(@style_names)
 		self
 	end
 
@@ -87,7 +88,7 @@ class Guest
 	end
 
 	def age_inspect
-		@age.to_zen + "歳"
+		@age + "歳"
 	end
 
 	def style_name_inspect
@@ -112,4 +113,15 @@ class Guest
 	end
 end
 
-puts Guest.new.generate.inspect
+open("ayakashi_list.txt","w") do |outfile|
+	count = 0
+	while count < 100
+		guest = Guest.new
+		next if !guest.style_names.include?("アヤカシ")
+		outfile.puts guest.inspect
+		count += 1
+	end
+end
+# end
+#puts Guest.new.inspect
+#puts Outfit.generate(["ヒルコ"]).inspect

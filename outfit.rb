@@ -12,35 +12,45 @@ class Outfit
 
 	STYLE_MUSTBUY = {
 		"アラシ" => [
-			{type: "ウォーカー",minexp:20},
-			{type: "搭載兵器",minexp:20}
+			{type: "ウォーカー",minexp:10},
+			{type: "搭載兵器",minexp:10}
 		],
 		"カゼ" => [
 			{group: "ヴィークル"},
 			{type: "搭載兵器"}
 		],
 		"カブトワリ" => [
-			{type:"射撃武器",minexp:20}
+			{type:"射撃武器",minexp:10}
 		],
 		"カタナ" => [
-			{type: "白兵武器",minexp:20}
+			{type: "白兵武器",minexp:10}
+		],
+		"ヒルコ" => [
+			{type: "変異器官",minexp:5},
+			{type: "変異器官",minexp:5},
 		],
 		"ニューロ" => [
 			{type: "タップ",minexp:10},
 			{type: "ソフトウェア",minexp:10},
 			{type: "ソフトウェア",minexp:10}
 		]
-
 	}
 
-	def self.generate(styles)
-		cost_total = 70
-		style_names = styles.map{|e|e[NAME]}
+	STYLE_REQUIRED = [
+		["アラシ",:type,"ウォーカー"],
+		["ヒルコ",:type,"変異器官"],
+		["ニューロ",:group,"トロン"]
+	]
+
+	def self.generate(style_names)
+		cost_total = 50
 		outfits = []
 		STYLE_MUSTBUY.each_pair do |style,list|
 			if style_names.include? style
 				list.each do |item|
+					item[:maxexp] = cost_total
 					outfit = Outfit.new.generate(item)
+					next if outfit.nil?
 					cost_total -= outfit.exp
 					outfits << outfit
 				end
@@ -49,28 +59,35 @@ class Outfit
 
 		while cost_total > 0
 			outfit = Outfit.new.generate(minexp:(cost_total/4), maxexp:cost_total)
+			break if outfit.nil?
+
+			# 不適切なアウトフィットを除外
+			flag = false
+			STYLE_REQUIRED.each do |style,type,name|
+				if style_names.include?(style) && outfit.send(type) == name
+					flag = true
+				end
+			end
+			next if flag
+
 			cost_total -= outfit.exp
 			outfits << outfit
 		end
 
-		def outfits.inspect
-			sort_by{|o|ORDER.index(o.group)}
-		end
-
-		outfits
+		outfits.sort_by{|o|ORDER.index(o.group).to_s+o.type}
 	end
 
 	def initialize
 		@outfit = []
 	end
 
-	def generate(group: nil, type: nil, minexp: 5, maxexp: 50)
+	def generate(group: nil, type: nil, minexp: 5, maxexp: 30)
 		list = OUTFITS
 		list = list.select{|o|o[:group] == group} if group
 		list = list.select{|o|o[:type] == type} if type
 		list = list.select{|o|o[:exp] >= minexp} if minexp
 		list = list.select{|o|o[:exp] <= maxexp} if maxexp
-		raise "empty!" if list.empty?
+		list = OUTFITS.select{|o|o[:exp] <= 5} if list.empty?
 		@outfit = list[rand(list.size)]
 		self
 	end
@@ -82,6 +99,7 @@ class Outfit
 	def rule;@outfit[:rule];end
 	def page;@outfit[:page];end
 	def exp;@outfit[:exp];end
+	def nil?;@outfit.nil?;end
 
 	def inspect
 		"#{name}（#{rule}#{page}）exp:#{exp}"

@@ -5,7 +5,6 @@
 性別：<%= @name.gender %>
 年齢：<%= age_inspect %>
 所属：<%= @organization %>
-消費経験点：２２０
 
 ▼スタイル
  <%= style_name_inspect %>
@@ -28,7 +27,7 @@
 <% end %>
 <% pregroup = "" %>
 <% pretype = "" %>
-<% @outfits.inspect.each do |outfit| %>
+<% @outfits.each do |outfit| %>
 <% if pregroup != outfit.group %>
 <% pregroup = outfit.group %>
 
@@ -42,5 +41,5 @@
 <% end %>
 
 ▼戦闘プラン
+
 -----------------------------------------
-「トーキョーN◎VA The Axlerationは有限会社ファーイースト・アミューズメント・リサーチの著作物です」
