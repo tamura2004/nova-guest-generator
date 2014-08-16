@@ -1,4 +1,4 @@
-require "./name.rb"
+require "./lib/name.rb"
 
 describe Name do
 
@@ -25,6 +25,6 @@ describe Name do
 	end
 
 	it "#inspect" do
-		expect(subject.inspect).to be_a String
+		expect(subject.to_s).to be_a String
 	end
 end

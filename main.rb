@@ -1,6 +1,6 @@
 require "rubygems"
 require "sinatra"
-require "./guest_generator.rb"
+require "./lib/guest.rb"
 
 get "/" do
 	#attachment 'guest.txt'

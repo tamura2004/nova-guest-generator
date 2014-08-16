@@ -1,9 +1,11 @@
 # encoding: utf-8
 
-require "./name_constant.rb"
+require File.expand_path("../name_constant.rb",__FILE__)
 
 class Name
 	include NameConstant
+
+	attr_accessor :handle, :jname, :ename, :gender
 
 	def initialize
 		change_gender
@@ -47,7 +49,7 @@ class Name
 		@male_name =  MALE_FIRST.sample + MALE_MIDDLE.sample + MALE_LAST.sample
 	end
 
-	def inspect
+	def to_s
 		if rand < 0.4
 			"“#{handle}”#{ename} #{jname}"
 		else
@@ -55,5 +57,4 @@ class Name
 		end
 	end
 
-	attr_accessor :handle, :jname, :ename, :gender
 end

@@ -1,14 +1,6 @@
 # encoding: utf-8
 
-class Outfit
-
-	NAME = 1
-
-	# :id, :group, :type, :name, :exp, :rule, :page
-	OUTFITS = CSV.table("outfits.csv")
-	# p OUTFITS.sort_by{|e|e[:id]}.map{|e|e[:group]}.uniq
-
-	ORDER = %w(武器 防具 サイバーウェア ヴィークル トロン 生体装備 カルチャーウェア サービス 住居 その他)
+class Outfits < Array
 
 	STYLE_MUSTBUY = {
 		"アラシ" => [
@@ -42,17 +34,19 @@ class Outfit
 		["ニューロ",:group,"トロン"]
 	]
 
-	def self.generate(style_names)
+	ORDER = %w(武器 防具 サイバーウェア ヴィークル トロン 生体装備 カルチャーウェア サービス 住居 その他)
+
+	def initialize(guest)
+
 		cost_total = 50
-		outfits = []
 		STYLE_MUSTBUY.each_pair do |style,list|
-			if style_names.include? style
+			if guest.styles.include? style
 				list.each do |item|
 					item[:maxexp] = cost_total
 					outfit = Outfit.new.generate(item)
 					next if outfit.nil?
 					cost_total -= outfit.exp
-					outfits << outfit
+					self << outfit
 				end
 			end
 		end
@@ -64,18 +58,29 @@ class Outfit
 			# 不適切なアウトフィットを除外
 			flag = false
 			STYLE_REQUIRED.each do |style,type,name|
-				if style_names.include?(style) && outfit.send(type) == name
+				if guest.styles.include?(style) && outfit.send(type) == name
 					flag = true
 				end
 			end
 			next if flag
 
 			cost_total -= outfit.exp
-			outfits << outfit
+			self << outfit
 		end
 
-		outfits.sort_by{|o|ORDER.index(o.group).to_s+o.type}
+		sort_by!{|o|ORDER.index(o.group).to_s+o.type}
 	end
+
+	def groups;map(&:group);end
+	def types;map(&:type);end
+end
+
+class Outfit
+
+	NAME = 1
+
+	# :id, :group, :type, :name, :exp, :rule, :page
+	OUTFITS = CSV.table(File.expand_path("../../data/outfits.csv",__FILE__))
 
 	def initialize
 		@outfit = []
@@ -101,7 +106,7 @@ class Outfit
 	def exp;@outfit[:exp];end
 	def nil?;@outfit.nil?;end
 
-	def inspect
+	def to_s
 		"#{name}（#{rule}#{page}）exp:#{exp}"
 	end
 
