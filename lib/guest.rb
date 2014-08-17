@@ -4,13 +4,13 @@ require "erb"
 require "csv"
 require "pry"
 
-require_relative "name.rb"
-require_relative "organization.rb"
-require_relative "style.rb"
-require_relative "age.rb"
-require_relative "abilities.rb"
-require_relative "skills.rb"
-require_relative "outfit.rb"
+require_relative "name"
+require_relative "organization"
+require_relative "style"
+require_relative "age"
+require_relative "abilities"
+require_relative "skills"
+require_relative "outfit"
 
 TEMPLATE = open(File.expand_path("../../view/guest_generator.erb",__FILE__),"r:utf-8").read
 

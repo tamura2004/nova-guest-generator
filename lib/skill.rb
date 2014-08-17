@@ -1,22 +1,22 @@
 # encoding: utf-8
-require_relative "mark.rb"
+require_relative "const"
+require_relative "mark"
 
-class Skill < Hash
-
-	BASE_SKILLS = ["射撃","心理","自我","回避","操縦","白兵","圧力","信用"]
+class Skill
+	attr_accessor :name,:type,:level,:mark,:rule,:page
 
 	def initialize(name:,type:,level:,mark:,rule:,page:)
-		self[:name] = name
-		self[:type] = Type.new(type: type, name: name)
-		self[:level] = level
-		self[:mark] = Mark.new(mark).grow_upto!(level)
-		self[:rule] = rule
-		self[:page] = page
+		@name = name
+		@type = Type.new(type: type, name: name)
+		@level = level
+		@mark = Mark.new(mark).grow_upto!(level)
+		@rule = rule
+		@page = page
 	end
 
 	def inc!
-		self[:level] += 1
-		self[:mark].inc
+		level += 1
+		mark.inc
 		self
 	end
 
@@ -27,30 +27,10 @@ class Skill < Hash
 
 	# 全体表示用
 	def to_s
-		if type == ORDINAL
-			"#{mark_inspect}〈#{type_inspect}#{name}〉#{to_zen(level)}"
-		else
-			"#{mark_inspect}〈#{type_inspect}#{name}〉#{to_zen(level)}（#{rule}#{page}）"
-		end
+		"#{mark}〈#{type}#{name}〉#{to_zen(level)}（#{rule}#{page}）"
 	end
 
 	private
-
-	# スキル種類表示用
-	def type_inspect
-		type = ""
-		case @type
-		when ORDINAL
-			if BASE_SKILLS.include?(@name)
-				type = "★"
-			end
-		when MISTIQUE
-			type = "†"
-		when ULTIMATE
-			type = "※"
-		end
-		type
-	end
 
 	def to_zen(i)
 		i.to_s.tr("0-9","０-９")
@@ -58,6 +38,8 @@ class Skill < Hash
 end
 
 class Skill::Type
+	include Const
+
 	def initialize(type:,name:nil)
 		@type = type
 		@name = name
@@ -65,9 +47,9 @@ class Skill::Type
 
 	def to_s
 		case @type
-		when :basic then BASE_SKILLS.include?(name) ? "★" : ""
-		when :mistique then "†"
-		when :ultimate then "※"
+		when BASIC then ACTION.include?(@name) ? "★" : ""
+		when MISTIQUE then "†"
+		when ULTIMATE then "※"
 		end
 	end
 end

@@ -1,13 +1,11 @@
 # encoding: utf-8
+require_relative "suit"
 
 # トランプのマークの on/off
-class Mark < Hash
+class Mark < Suit
 
 	def initialize(reason: false, passion: false, life: false, mundane: false)
-		self[:reason] = reason
-		self[:passion] = passion
-		self[:life] = life
-		self[:mundane] = mundane
+		insert(0,reason,passion,life,mundane)
 	end
 
 	def inc!
@@ -26,7 +24,7 @@ class Mark < Hash
 	end
 
 	def to_s
-		values.map(&method(:to_mark)).join
+		map(&method(:to_mark)).join
 	end
 
 	def level
@@ -36,11 +34,11 @@ class Mark < Hash
 	private
 
 	def marked
-		keys.select(&method(:[]))
+		IDS.select(&method(:[]))
 	end
 
 	def unmarked
-		keys - marked
+		IDS - marked
 	end
 
 	def to_mark(boolean)

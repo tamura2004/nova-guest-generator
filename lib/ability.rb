@@ -1,12 +1,11 @@
 # encoding: utf-8
-require_relative "pair.rb"
+require_relative "pair"
 
 class Ability
 
 	attr_reader :id
 	include Comparable
 
-	LABELS = %w(理性 感情 生命 外界)
 
 	def initialize(id,level:0,styles:[])
 		@id = id
