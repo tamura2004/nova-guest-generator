@@ -1,8 +1,9 @@
 # encoding: utf-8
 require "csv"
 
-module LoadCSV
+module CSVLoader
 	def table(filename)
+		filename += ".csv" if filename !~ /¥.csv$/
 		path = File.join(data_path, filename)
 		CSV.table path, encoding: "BOM|UTF-8"
 	end
@@ -19,3 +20,13 @@ module LoadCSV
 		File.expand_path("../../data",__FILE__)
 	end
 end
+
+# usage:
+# include CSVLoader
+# class Skill
+# 	def initialize
+# 		CSVLoader::each_row "style_skills" do |row|
+# 			puts row[:name]
+# 		end
+# 	end
+# end

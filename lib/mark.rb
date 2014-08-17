@@ -1,5 +1,7 @@
 # encoding: utf-8
 require_relative "suit"
+require_relative "const"
+include Const
 
 # トランプのマークの on/off
 class Mark < Suit
@@ -34,7 +36,7 @@ class Mark < Suit
 	private
 
 	def marked
-		IDS.select(&method(:[]))
+		Const::IDS.select(&method(:[]))
 	end
 
 	def unmarked

@@ -5,11 +5,12 @@ require File.expand_path("../name_constant.rb",__FILE__)
 class Name
 	include NameConstant
 
-	attr_accessor :handle, :jname, :ename, :gender
+	attr_accessor :handle, :jname, :ename, :gender, :myoji
 
 	def initialize
 		change_gender
 		change_handle
+		change_myoji
 		change_jname
 		change_ename
 	end
@@ -27,8 +28,22 @@ class Name
 		@handle = HANDLE_BEFORE.sample + HANDLE_AFTER.sample
 	end
 
+	def change_myoji
+		@myoji = case rand(3)
+		when 0 then JAPAN_KANA_FAMILY_NAMES.sample
+		when 1 then JAPAN_FAMILY_NAMES.sample
+		else JUNIOR_WORDS.sample
+		end
+	end
+
 	def change_jname
-		@jname = JNAME_BEFORE.sample + JNAME_AFTER.sample
+		case @gender
+		when "男性"
+			@jname = rand(3).zero? ? JAPAN_MALE_NAMES.sample : JAPAN_KANA_MALE_NAMES.sample
+
+		when "女性"
+			@jname = rand(3).zero? ? JAPAN_FEMALE_NAMES.sample : JAPAN_KANA_FEMALE_NAMES.sample
+		end
 	end
 
 	def change_ename
@@ -50,11 +65,13 @@ class Name
 	end
 
 	def to_s
-		if rand < 0.4
-			"“#{handle}”#{ename} #{jname}"
-		else
-			"“#{handle}”#{jname} #{ename}"
+		case rand(4)
+		when 0 then "“#{handle}”#{ename} #{myoji}"
+		when 1 then "“#{handle}”#{myoji} #{ename}"
+		when 2 then "“#{handle}”#{myoji} #{ename} #{jname}"
+		when 3 then "“#{handle}”#{ename} #{jname} "
 		end
 	end
-
 end
+
+puts Name.new.to_s if __FILE__ == $0

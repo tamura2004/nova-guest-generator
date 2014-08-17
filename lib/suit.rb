@@ -1,8 +1,6 @@
 # encoding: utf-8
-require_relative "const"
 
 class Suit < Array
-	include Const
 
 	# getter
 	def reason()	self[0] end
@@ -15,6 +13,5 @@ class Suit < Array
 	def passion=(v)	self[1] = v end
 	def life=(v)	self[2] = v end
 	def mundane=(v)	self[3] = v end
-
 end
 

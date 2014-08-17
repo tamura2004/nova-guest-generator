@@ -17,12 +17,12 @@
  ＣＳ：<%= abilities.cs %>
 
 ▼一般技能
-<% skills.ordinal.each do |skill| %>
+<% skills.basic.each do |skill| %>
  <%= skill %>
 <% end %>
 
 ▼特技
-<% skills.not_ordinal.each do |skill| %>
+<% skills.not_basic.each do |skill| %>
  <%= skill %>
 <% end %>
 <% pregroup = "" %>
