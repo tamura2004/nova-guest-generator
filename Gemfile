@@ -3,7 +3,10 @@ source "https://rubygems.org"
 ruby "2.1.2"
 
 gem "sinatra"
+gem "sinatra-contrib"
 gem "thin"
+gem "prawn"
+gem "dberkom-sinatra-prawn"
 
 group :development, :test do
 	gem "rspec"
