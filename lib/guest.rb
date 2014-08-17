@@ -2,7 +2,6 @@
 require "yaml"
 require "erb"
 require "csv"
-require "pry"
 
 require_relative "name"
 require_relative "organization"
