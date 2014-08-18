@@ -7,6 +7,7 @@ gem "sinatra-contrib"
 gem "thin"
 gem "prawn"
 gem "dberkom-sinatra-prawn"
+gem "slim"
 
 group :development, :test do
 	gem "rspec"

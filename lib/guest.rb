@@ -11,7 +11,7 @@ require_relative "abilities"
 require_relative "skills"
 require_relative "outfit"
 
-TEMPLATE = open(File.expand_path("../../view/guest_generator.erb",__FILE__),"r:utf-8").read
+TEMPLATE = open(File.expand_path("../../views/guest_generator.erb",__FILE__),"r:utf-8").read
 
 class Guest
 

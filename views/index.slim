@@ -1,0 +1,38 @@
+doctype html
+html
+	head
+		title ゲストキャラクター
+		meta charset="utf-8"
+		link rel="stylesheet" href="squaregrid.css"
+		link rel="stylesheet" href="user.css"
+	body
+		#wrapper
+			#container
+				- @guests.each do |guest|
+					.sg-35
+						h1 = guest.name
+					.sg-5
+						h2 ▼パーソナリティ
+						p 性別：#{guest.name.gender}
+						p 年齢：#{guest.age}
+						p 所属：#{guest.organization}
+						p &nbsp;
+						h2 ▼能力値
+						- guest.abilities.each do |ability|
+							p= ability
+						p= "ＣＳ：#{guest.abilities.cs}"
+					.sg-9
+						h2 ▼スタイル
+						p= guest.styles
+						p &nbsp
+						h2 ▼一般技能
+						- guest.skills.basic.each do |skill|
+							p= skill
+					.sg-9
+						h2 ▼特技
+						- guest.skills.not_basic.each do |skill|
+							p= skill
+					.sg-9
+						h2 ▼アウトフィット
+						- guest.outfits.each do |outfit|
+							p= outfit

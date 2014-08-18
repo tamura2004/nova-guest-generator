@@ -72,7 +72,11 @@ GEM
       rack-test
       sinatra (~> 1.4.0)
       tilt (~> 1.3)
+    slim (2.0.2)
+      temple (~> 0.6.6)
+      tilt (>= 1.3.3, < 2.1)
     slop (3.5.0)
+    temple (0.6.7)
     terminal-notifier-guard (1.5.3)
     thin (1.6.2)
       daemons (>= 1.0.9)
@@ -96,5 +100,6 @@ DEPENDENCIES
   rspec-its
   sinatra
   sinatra-contrib
+  slim
   terminal-notifier-guard
   thin

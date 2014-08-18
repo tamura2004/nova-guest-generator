@@ -3,7 +3,7 @@ require "sinatra"
 require "prawn"
 require "sinatra/prawn"
 require "sinatra/reloader" if development?
-
+require "slim"
 require "./lib/guest.rb"
 
 set :prawn, {
@@ -20,6 +20,11 @@ get "/" do
 	content_type 'text/plane'
 	guest = Guest.new
 	guest.to_s + "「トーキョーN◎VA The Axlerationは有限会社ファーイースト・アミューズメント・リサーチの著作物です」"
+end
+
+get "/slim" do
+	@guests = Array.new(6){Guest.new}
+	slim :index
 end
 
 get "/pdf" do
