@@ -11,7 +11,8 @@ table {border-collapse:collapse; border-spacing:0;} /* tables still need 'cellsp
 .clear { clear:both; display:block; overflow:hidden; visibility:hidden; width:0; height:0;} /* source: http://sonspring.com/journal/clearing-floats */
 
 /* BEGIN SQUARE GRID CODE */
-body {background-color:#f4f4f4; font-size:62.5%; line-height:28px; /* for RTL add: 'direction: rtl;' */ }
+body {background-color:#f4f4f4; font-size:80%; line-height:28px; /* 62.5% for RTL add: 'direction: rtl;' */ }
+body{font-family: Verdana, "游ゴシック", YuGothic, "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;}
 
 /* your main wrapping div */
 #wrapper{ margin: 0 auto; position:relative; overflow: hidden; width: 994px;background:#fff url(sg_grid_sub.png) center top repeat; }

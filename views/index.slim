@@ -20,7 +20,8 @@ html
 						h2 ▼能力値
 						- guest.abilities.each do |ability|
 							p= ability
-						p= "ＣＳ：#{guest.abilities.cs}"
+						p ＣＳ：
+						p = guest.abilities.cs
 					.sg-9
 						h2 ▼スタイル
 						p= guest.styles
