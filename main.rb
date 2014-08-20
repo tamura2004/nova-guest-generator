@@ -4,8 +4,6 @@ require "prawn"
 require "sinatra/prawn"
 require "sinatra/reloader" if development?
 require "slim"
-require "pg"
-require "base64"
 require "./lib/guest.rb"
 
 set :prawn, {

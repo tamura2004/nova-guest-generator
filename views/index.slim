@@ -26,8 +26,7 @@ html
 						h3 ▼能力値
 						- guest.abilities.each do |ability|
 							p= ability
-						p ＣＳ：
-						p = guest.abilities.cs
+						p ＣＳ：#{guest.abilities.cs}
 					.sg-9
 						h3: a href="guest/#{i}/styles" ▼スタイル
 						p= guest.styles
