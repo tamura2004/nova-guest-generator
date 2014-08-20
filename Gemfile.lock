@@ -29,7 +29,6 @@ GEM
     method_source (0.8.2)
     multi_json (1.10.1)
     pdf-core (0.2.5)
-    pg (0.17.1)
     prawn (1.2.1)
       pdf-core (~> 0.2.5)
       ttfunk (~> 1.2.0)
@@ -95,7 +94,6 @@ DEPENDENCIES
   dberkom-sinatra-prawn
   guard
   guard-rspec
-  pg
   prawn
   rspec
   rspec-collection_matchers
