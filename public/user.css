@@ -1,1 +1,13 @@
-h1{background-color: #222; color:white;}
+h2{background-color: #222; color:white; padding-left:0.5em;}
+h2 a:link{color:white;}
+h2 a:visited{color:white;}
+
+h3{color:#222;}
+h3 a:link{color:#222;}
+h3 a:visited{color:#222;}
+
+p{color:#222;}
+p a:link{color:#222;}
+p a:visited{color:#222;}
+
+.button{background-color:#222; color white}

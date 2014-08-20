@@ -8,6 +8,7 @@ gem "thin"
 gem "prawn"
 gem "dberkom-sinatra-prawn"
 gem "slim"
+#gem "pg"
 
 group :development, :test do
 	gem "rspec"

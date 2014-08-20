@@ -13,6 +13,7 @@ class Name
 		change_myoji
 		change_jname
 		change_ename
+		@rand = rand(4)
 	end
 
 	def change_gender
@@ -65,7 +66,7 @@ class Name
 	end
 
 	def to_s
-		case rand(4)
+		case @rand
 		when 0 then "“#{handle}”#{ename} #{myoji}"
 		when 1 then "“#{handle}”#{myoji} #{ename}"
 		when 2 then "“#{handle}”#{myoji} #{ename} #{jname}"

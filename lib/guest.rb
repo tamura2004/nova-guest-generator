@@ -15,17 +15,25 @@ TEMPLATE = open(File.expand_path("../../views/guest_generator.erb",__FILE__),"r:
 
 class Guest
 
-	attr_reader :name
-	attr_reader :organization
-	attr_reader :age
-	attr_reader :styles
-	attr_reader :abilities
-	attr_reader :skills
-	attr_reader :outfits
+	attr_accessor :name
+	attr_accessor :organization
+	attr_accessor :age
+	attr_accessor :styles
+	attr_accessor :abilities
+	attr_accessor :skills
+	attr_accessor :outfits
 
 	def initialize
 		@name = Name.new
 		@organization = Organization.new
+		@styles = Styles.new
+		@age = Age.new(self)
+		@abilities = Abilities.new(self)
+		@skills = Skills.new(self)
+		@outfits = Outfits.new(self)
+	end
+
+	def styles_change
 		@styles = Styles.new
 		@age = Age.new(self)
 		@abilities = Abilities.new(self)

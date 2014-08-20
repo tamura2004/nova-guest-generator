@@ -1,6 +1,7 @@
 # encoding: utf-8
 require_relative "mark"
 require_relative "type"
+require_relative "const"
 
 class Skill
 	attr_accessor :name,:type,:level,:mark,:rule,:page,:no,:style
@@ -32,7 +33,8 @@ class Skill
 
 	# 全体表示用
 	def to_s
-		"#{mark}〈#{type}#{name}〉#{to_zen(level)}（#{rule}#{page}）"
+		"#{mark}〈#{type}#{name}〉#{to_zen(level)}" +
+		(@type != Const::BASIC ? "（#{rule}#{page}）" : "")
 	end
 
 	def to_hash

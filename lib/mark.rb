@@ -44,6 +44,6 @@ class Mark < Suit
 	end
 
 	def to_mark(boolean)
-		boolean ? "●" : "○"
+		boolean ? "■" : "○"
 	end
 end
