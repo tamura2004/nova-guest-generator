@@ -26,8 +26,12 @@ class Style
 
 	attr_accessor :key, :persona
 
-	def initialize
-		@style = LIST.sample
+	def initialize(style_id=nil)
+		if style_id
+			@style = LIST[style_id]
+		else
+			@style = LIST.sample
+		end
 		@key = false
 		@persona = false
 	end

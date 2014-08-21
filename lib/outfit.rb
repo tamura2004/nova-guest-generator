@@ -58,7 +58,7 @@ class Outfits < Array
 			# 不適切なアウトフィットを除外
 			flag = false
 			STYLE_REQUIRED.each do |style,type,name|
-				if guest.styles.include?(style) && outfit.send(type) == name
+				if !guest.styles.include?(style) && outfit.send(type) == name
 					flag = true
 				end
 			end

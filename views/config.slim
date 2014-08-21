@@ -1,0 +1,31 @@
+doctype html
+html
+	head
+		title 設定
+		meta charset="utf-8"
+		link rel="stylesheet" href="kube.min.css"
+		link rel="stylesheet" href="squaregrid.css"
+		link rel="stylesheet" href="user.css"
+	body
+		#wrapper
+			#container
+				.sg-2
+					p: a href="/" [back]
+				.sg-35
+					h2 設定
+				- 6.times do |i|
+					.sg-5
+						h3 NPC #{i}
+						- @styles.each_with_index do |style,j|
+							- mark = @config[i] == j ? "x" : ""
+							p: a href="/config/#{i}/#{j}" [#{mark}]#{style}
+
+				/ - (1..6).each do |i|
+				/ 	.sg-35
+				/ 		form.forms
+				/ 			span NPC#{i}
+				/ 			- (1..10).each do |j|
+				/ 				ul.forms-inline-list
+				/ 					li
+				/ 						input type="checkbox" name="guest" id="box#{i}#{j}"
+				/ 						label for="box#{i}#{j}" --

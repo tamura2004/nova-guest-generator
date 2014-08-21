@@ -16,59 +16,72 @@ set :prawn, {
 	compress: true
 }
 
-guests = Array.new(6){Guest.new}
+config = [12,17,25,5,22,0]
+guests = config.map{|s|Guest.new(s)}
 
 # get "/guest/*" do |id|
 # 	guests[id.to_i] = Guest.new
 # 	redirect to("/slim")
 # end
 
+get "/config" do
+	@config = config
+	@styles = %w(近接系 射撃系 ロボ乗り 精神攻撃 社会攻撃 支援系) + STYLES
+	slim :config
+end
+
+get "/config/*/*" do |npc,style|
+	config[npc.to_i] = style.to_i
+	guests[npc.to_i].style_id = style.to_i
+	redirect to("/config")
+end
+
 get "/reset" do
-	guests = Array.new(6){Guest.new}
-	redirect to("/slim")
+	guests = config.map{|s|Guest.new(s)}
+	redirect to("/")
 end
 
 get "/guest/*/styles" do |i|
 	guests[i.to_i].styles_change
-	redirect to("/slim")
+	redirect to("/")
 end
 
 get "/guest/*/name" do |i|
 	guests[i.to_i].name = Name.new
-	redirect to("/slim")
+	redirect to("/")
 end
 
 get "/guest/*/age" do |i|
 	guests[i.to_i].age = Age.new(guests[i.to_i])
-	redirect to("/slim")
+	redirect to("/")
 end
 
 get "/guest/*/organization" do |i|
 	guests[i.to_i].organization = Organization.new
-	redirect to("/slim")
+	redirect to("/")
 end
 
 get "/guest/*/skills" do |i|
 	guests[i.to_i].skills = Skills.new(guests[i.to_i])
-	redirect to("/slim")
+	redirect to("/")
 end
 
 get "/guest/*/outfits" do |i|
 	guests[i.to_i].outfits = Outfits.new(guests[i.to_i])
-	redirect to("/slim")
+	redirect to("/")
 end
 
 get "/guest/*/gender" do |i|
 	guests[i.to_i].name.change_gender
-	redirect to("/slim")
+	redirect to("/")
 end
 
-get "/" do
+get "/text" do
 	content_type 'text/plane'
 	guests.map(&:to_s).join("") + "「トーキョーN◎VA The Axlerationは有限会社ファーイースト・アミューズメント・リサーチの著作物です」"
 end
 
-get "/slim" do
+get "/" do
 	@guests = guests
 	slim :index
 end
@@ -79,12 +92,12 @@ get "/pdf" do
 	prawn :pdf
 end
 
-get "/download" do
-	attachment 'guest.txt'
-	content_type 'text/plane'
-	guest = Guest.new
-	guest.to_s
-end
+# get "/download" do
+# 	attachment 'guest.txt'
+# 	content_type 'text/plane'
+# 	guest = Guest.new
+# 	guest.to_s
+# end
 
 __END__
 

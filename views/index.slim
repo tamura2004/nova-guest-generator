@@ -9,9 +9,16 @@ html
 		#wrapper
 			#container
 				.sg-2
-					p: a href="/reset" [Reset]
+					p: a href="/" [Home]
 				.sg-2
-					p: a href="/" [text]
+					p: a href="/config" [Config]
+				.sg-2
+					p: a href="/reset" [Reset]
+				.sg-4
+				.sg-3
+					p export ->
+				.sg-2
+					p: a href="/text" [text]
 				.sg-2
 					p: a href="/pdf" [pdf]
 				- @guests.each_with_index do |guest,i|
@@ -40,5 +47,7 @@ html
 							p= skill
 					.sg-9
 						h3: a href="guest/#{i}/outfits" ▼アウトフィット
-						- guest.outfits.each do |outfit|
-							p= outfit
+						- guest.outfits.chunk(&:group).each do |group,outfits|
+							h3 ▼#{group}
+							- outfits.each do |outfit|
+								p= outfit

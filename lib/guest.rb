@@ -22,11 +22,17 @@ class Guest
 	attr_accessor :abilities
 	attr_accessor :skills
 	attr_accessor :outfits
+	attr_accessor :style_id
 
-	def initialize
+	def initialize(style_id)
+		@style_id = style_id
 		@name = Name.new
 		@organization = Organization.new
 		@styles = Styles.new
+		if @style_id > 5
+			@styles[0] = Style.new(@style_id-6)
+		end
+
 		@age = Age.new(self)
 		@abilities = Abilities.new(self)
 		@skills = Skills.new(self)
@@ -35,6 +41,10 @@ class Guest
 
 	def styles_change
 		@styles = Styles.new
+		if @style_id > 5
+			@styles[0] = Style.new(@style_id-6)
+		end
+
 		@age = Age.new(self)
 		@abilities = Abilities.new(self)
 		@skills = Skills.new(self)
