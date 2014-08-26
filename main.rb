@@ -16,23 +16,37 @@ set :prawn, {
 	compress: true
 }
 
-config = [12,17,25,5,22,0]
-guests = config.map{|s|Guest.new(s)}
+name2id = {}
+STYLE_DATA.each_pair do |k,v|
+	name2id[v.name] = k
+end
 
-# get "/guest/*" do |id|
-# 	guests[id.to_i] = Guest.new
-# 	redirect to("/slim")
-# end
+guests = Array.new(6){Guest.new}
+config = %w(アラシ カタナ カブトワリ ニューロ ヒルコ アヤカシ)
+config.each_with_index do |name,i|
+	guests[i].styles[0].id = name2id[name]
+end
+
+get "/" do
+	@guests = guests
+	slim :index
+end
 
 get "/config" do
 	@config = config
-	@styles = %w(近接系 射撃系 ロボ乗り 精神攻撃 社会攻撃 支援系) + STYLES
+	# @styles = STYLES + %w(近接系 射撃系 ロボ乗り 精神攻撃 社会攻撃 支援系)
+	@styles = STYLE_DATA.values.map(&:name)
 	slim :config
 end
 
 get "/config/*/*" do |npc,style|
-	config[npc.to_i] = style.to_i
-	guests[npc.to_i].style_id = style.to_i
+	npc = npc.to_i
+	style = style.to_i
+
+	config[npc] = STYLE_DATA[style].name
+	guests[npc].styles[0].id = STYLE_KEYS[style]
+	# guests[npc].skills.change
+	# guests[npc].outifts.change
 	redirect to("/config")
 end
 
@@ -42,7 +56,7 @@ get "/reset" do
 end
 
 get "/guest/*/styles" do |i|
-	guests[i.to_i].styles_change
+	guests[i.to_i].styles.change
 	redirect to("/")
 end
 
@@ -52,22 +66,22 @@ get "/guest/*/name" do |i|
 end
 
 get "/guest/*/age" do |i|
-	guests[i.to_i].age = Age.new(guests[i.to_i])
+	guests[i.to_i].age.change
 	redirect to("/")
 end
 
 get "/guest/*/organization" do |i|
-	guests[i.to_i].organization = Organization.new
+	guests[i.to_i].organization.change
 	redirect to("/")
 end
 
 get "/guest/*/skills" do |i|
-	guests[i.to_i].skills = Skills.new(guests[i.to_i])
+	guests[i.to_i].skills.change
 	redirect to("/")
 end
 
 get "/guest/*/outfits" do |i|
-	guests[i.to_i].outfits = Outfits.new(guests[i.to_i])
+	guests[i.to_i].outfits.change
 	redirect to("/")
 end
 
@@ -81,42 +95,30 @@ get "/text" do
 	guests.map(&:to_s).join("") + "「トーキョーN◎VA The Axlerationは有限会社ファーイースト・アミューズメント・リサーチの著作物です」"
 end
 
-get "/" do
-	@guests = guests
-	slim :index
-end
-
 get "/pdf" do
 	@guests = guests
 	content_type 'application/pdf'
 	prawn :pdf
 end
 
-# get "/download" do
-# 	attachment 'guest.txt'
-# 	content_type 'text/plane'
-# 	guest = Guest.new
-# 	guest.to_s
+# __END__
+
+# @@ pdf
+# pdf.font "./font/ipag.ttf"
+
+# pdf.bounding_box([0,720],width:540,height:15) do
+# 	pdf.font_size = 12
+# 	pdf.stroke_bounds
+# 	pdf.text "ゲストデータ", align: :center
 # end
 
-__END__
-
-@@ pdf
-pdf.font "./font/ipag.ttf"
-
-pdf.bounding_box([0,720],width:540,height:15) do
-	pdf.font_size = 12
-	pdf.stroke_bounds
-	pdf.text "ゲストデータ", align: :center
-end
-
-3.times do |x|
-	2.times do |y|
-		pdf.bounding_box([x*180, 705-y*350],width:180,height:350) do
-			pdf.font_size = 6
-			pdf.stroke_bounds
-			pdf.text_box @guests[x*2+y].to_s,at:[10,345],width:160, height:345
-		end
-	end
-end
+# 3.times do |x|
+# 	2.times do |y|
+# 		pdf.bounding_box([x*180, 705-y*350],width:180,height:350) do
+# 			pdf.font_size = 6
+# 			pdf.stroke_bounds
+# 			pdf.text_box @guests[x*2+y].to_s,at:[10,345],width:160, height:345
+# 		end
+# 	end
+# end
 

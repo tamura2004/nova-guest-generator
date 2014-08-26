@@ -1,23 +1,28 @@
 # encoding: utf-8
 require_relative "skill"
-require_relative "csv_loader"
+# require_relative "csv_loader"
+require_relative "skill_data"
 require_relative "const"
 
-include CSVLoader
+# include CSVLoader
 
 class Skills < Array
 	include Const
 
 	# スキルデータ一覧
-	SKILLS = []
-	CSVLoader::each_row("style_skills") do |row|
-		SKILLS << Skill.new(row)
-	end
+	# SKILLS = []
+	# CSVLoader::each_row("style_skills") do |row|
+	# 	SKILLS << Skill.new(row)
+	# end
 
 	# 初期化
 	def initialize(guest)
-
 		@guest = guest
+		change
+	end
+
+	def change
+		clear
 
 		# 無条件取得技能
 		DEFAULT.each do |skill| add Skill.new(skill) end
@@ -29,7 +34,7 @@ class Skills < Array
 			num.times do
 				a = my_skills(type)
 				b = a.sample
-				c = b.to_hash
+				c = b.to_h
 				skill = Skill.new(c)
 				skill.add!(level)
 				add(skill)
@@ -40,7 +45,7 @@ class Skills < Array
 	# 所持スタイルから取得可能な技能一覧
 	def my_skills(type)
 		SKILLS.select do |skill|
-			@guest.include? skill.style and skill.type == type
+			@guest.styles.include? skill.style and skill.type == type
 		end
 	end
 

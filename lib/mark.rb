@@ -7,7 +7,7 @@ include Const
 class Mark < Suit
 
 	def initialize(reason: false, passion: false, life: false, mundane: false)
-		insert(0,reason,passion,life,mundane)
+		super(reason,passion,life,mundane)
 	end
 
 	def inc!

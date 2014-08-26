@@ -8,6 +8,10 @@ class Name
 	attr_accessor :handle, :jname, :ename, :gender, :myoji
 
 	def initialize
+		change
+	end
+
+	def change
 		change_gender
 		change_handle
 		change_myoji

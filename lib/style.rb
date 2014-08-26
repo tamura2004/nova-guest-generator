@@ -1,39 +1,12 @@
-# encoding: utf-8
+require_relative "named_hash"
+require_relative "const"
+include Const
 
-class Styles < Array
-	def initialize
-		3.times { self << Style.new }
-		self[rand(3)].key = true
-		self[rand(3)].persona = true
-	end
-
-	def names
-		map(&:name)
-	end
-
-	def marks
-		map(&:mark)
-	end
-
-	def to_s
-		map(&:to_s).join("＝")
-	end
-end
-
-class Style
-
-	LIST = YAML.load(open File.expand_path("../../data/guest_styles.yaml",__FILE__),"r:utf-8")
-
-	attr_accessor :key, :persona
-
-	def initialize(style_id=nil)
-		if style_id
-			@style = LIST[style_id]
-		else
-			@style = LIST.sample
-		end
-		@key = false
-		@persona = false
+class Style < Struct.new(:id,:fixed,:key,:persona)
+	def change
+		return if fixed
+		self.id = (STYLE_KEYS - [id]).sample
+		self
 	end
 
 	def mark
@@ -41,17 +14,34 @@ class Style
 	end
 
 	def to_s
-		mark + name
+		mark + STYLE_DATA[id].name
 	end
-
-	def id;@style[0];end
-	def name;@style[1];end
-	def ability;@style[2];end
-	def skill;@style[3];end
-
-	def ordinal;skill[0];end
-	def feat;skill[1];end
-	def mistique;skill[2];end
-	def ultimate;skill[3];end
-
 end
+
+# class Style < NamedHash
+# 	def initialize()
+# 		reset
+# 		super
+# 	end
+
+# 	def name
+# 		STYLES[id] rescue ""
+# 	end
+
+# 	def name=(name)
+# 		self[:id] = STYLES.index name
+# 	end
+
+# 	def reset
+# 		return if fixed
+# 		self[:id] = ((0...STYLES.size).to_a - [id]).sample
+# 	end
+
+# 	def mark
+# 		(key ? "●" : "") + (persona ? "◎" : "")
+# 	end
+
+# 	def to_s
+# 		mark + name
+# 	end
+# end

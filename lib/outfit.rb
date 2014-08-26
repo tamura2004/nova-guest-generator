@@ -1,4 +1,5 @@
 # encoding: utf-8
+require "csv"
 
 class Outfits < Array
 
@@ -37,10 +38,15 @@ class Outfits < Array
 	ORDER = %w(武器 防具 サイバーウェア ヴィークル トロン 生体装備 カルチャーウェア サービス 住居 その他)
 
 	def initialize(guest)
+		@guest = guest
+		change
+	end
 
+	def change
+		clear
 		cost_total = 50
 		STYLE_MUSTBUY.each_pair do |style,list|
-			if guest.styles.include? style
+			if @guest.styles.include? style
 				list.each do |item|
 					item[:maxexp] = cost_total
 					outfit = Outfit.new.generate(item)
@@ -58,7 +64,7 @@ class Outfits < Array
 			# 不適切なアウトフィットを除外
 			flag = false
 			STYLE_REQUIRED.each do |style,type,name|
-				if !guest.styles.include?(style) && outfit.send(type) == name
+				if !@guest.styles.include?(style) && outfit.send(type) == name
 					flag = true
 				end
 			end
