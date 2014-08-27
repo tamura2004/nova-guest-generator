@@ -29,7 +29,7 @@ class Skills < Array
 				a = my_skills(type)
 				b = a.sample
 				skill = Skill.new(b)
-				skill.add!(level)
+				skill.add!(level - skill.level)
 				add(skill)
 			end
 		end
