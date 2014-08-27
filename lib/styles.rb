@@ -1,7 +1,6 @@
 # encoding: utf-8
 require_relative "style"
-require_relative "const"
-include Const
+require_relative "rule/styles"
 
 class Styles < Array
 	def initialize
@@ -24,11 +23,7 @@ class Styles < Array
 
 	def include?(other)
 		any? do |style|
-			if String === other
-				STYLE_DATA[style.id] == other
-			else
-				style.id == other
-			end
+			[style.name, style.sym].include? other
 		end
 	end
 

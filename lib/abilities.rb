@@ -1,25 +1,33 @@
 # encoding: utf-8
-require_relative "ability"
-require_relative "const"
+require_relative "rule/styles"
 
-class Abilities < S
+class Abilities < Rule::Suit
+
+	Label = Rule::Suit["理性","感情","生命","外界"]
+	# Keys = Label.members
+
 	def initialize(guest)
-		guest.styles.map{|s|STYLE_DATA[s.id].ability}.inject(:+).each_pair do |k,v|
-			self[k] = v
-		end
+		@guest = guest
+	end
+
+	def suits
+		@guest.styles[0].ability +
+		@guest.styles[1].ability +
+		@guest.styles[2].ability
 	end
 
 	def each
-		each_pair do |k,v|
-			yield "#{ABILITY_LABELS[k]}：#{v.power}／#{v.control}"
+		suits.each_pair do |key,pair|
+			yield "#{Label[key]}：#{pair.power}／#{pair.control}"
 		end
 	end
+
+	def reason() suits.reason end
+	def passion() suits.passion end
+	def life() suits.life end
+	def mundane() suits.mundane end
 
 	def cs
 		(reason.power + passion.power + life.power)/2
 	end
 end
-
-		# G[S[P[0,3],P[3,5],P[2,4],P[2,4]],"カブキ"],
-		# G[S[P[3,5],P[2,5],P[1,3],P[1,3]],"バサラ"],
-		# G[S[P[3,5],P[1,3],P[1,3],P[2,5]],"タタラ"],
