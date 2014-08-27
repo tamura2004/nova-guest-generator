@@ -25,8 +25,7 @@ class Guest < Struct.new(:name,:organization,:styles,:age,:abilities,:skills,:ou
 	def include?(name)
 		# styles,outfit's type group, ordinal skill
 		styles && styles.include?(name) ||
-		outfits && outfits.groups.include?(name) ||
-		outfits && outfits.types.include?(name) ||
+		outfits && outfits.include?(name) ||
 		skills && skills.names.include?(name)
 	end
 

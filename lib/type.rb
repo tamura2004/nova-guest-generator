@@ -1,11 +1,16 @@
 # encoding: utf-8
-require_relative "const"
 
 class Type
-	include Const
-	def initialize(type:,name:nil)
-		@type = type
-		@name = name
+	ACTION 		= %(射撃 心理 自我 回避 操縦 白兵 圧力 信用)
+
+	BASIC 		= 0
+	FEAT 		= 1
+	MISTIQUE 	= 2
+	ULTIMATE 	= 3
+
+	def initialize(rule)
+		@type = rule.type
+		@name = rule.name
 	end
 
 	def to_s

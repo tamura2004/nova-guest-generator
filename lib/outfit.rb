@@ -1,119 +1,84 @@
 # encoding: utf-8
 require "csv"
+require_relative "rule/outfits"
 
 class Outfits < Array
 
-	STYLE_MUSTBUY = {
-		"アラシ" => [
-			{type: "ウォーカー",minexp:10},
-			{type: "搭載兵器",minexp:10}
-		],
-		"カゼ" => [
-			{group: "ヴィークル"},
-			{type: "搭載兵器"}
-		],
-		"カブトワリ" => [
-			{type:"射撃武器",minexp:10}
-		],
-		"カタナ" => [
-			{type: "白兵武器",minexp:10}
-		],
-		"ヒルコ" => [
-			{type: "変異器官",minexp:5},
-			{type: "変異器官",minexp:5},
-		],
-		"ニューロ" => [
-			{type: "タップ",minexp:10},
-			{type: "ソフトウェア",minexp:10},
-			{type: "ソフトウェア",minexp:10}
-		]
-	}
-
-	STYLE_REQUIRED = [
-		["アラシ",:type,"ウォーカー"],
-		["ヒルコ",:type,"変異器官"],
-		["ニューロ",:group,"トロン"]
-	]
-
-	ORDER = %w(武器 防具 サイバーウェア ヴィークル トロン 生体装備 カルチャーウェア サービス 住居 その他)
+	attr_accessor :exp,:not_own
 
 	def initialize(guest)
 		@guest = guest
 		change
 	end
 
+	def include?(other)
+		case other
+		when Rule::Outfits::Buy
+			any?{|o|o.group == other.group} ||
+			any?{|o|o.type == other.type}
+		else
+			any?{|o|o.group == other} ||
+			any?{|o|o.type == other}
+		end
+	end
+
+	def mustbuy
+		Rule::Outfits::Mustbuy.select do |buy|
+			@guest.styles.any?{|s|s.sym == buy.style}
+		end
+	end
+
 	def change
 		clear
-		cost_total = 50
-		STYLE_MUSTBUY.each_pair do |style,list|
-			if @guest.styles.include? style
-				list.each do |item|
-					item[:maxexp] = cost_total
-					outfit = Outfit.new.generate(item)
-					next if outfit.nil?
-					cost_total -= outfit.exp
-					self << outfit
-				end
-			end
+		@exp = 50
+		@not_own = Rule::Outfits::Types
+
+		# スタイル必須装備
+		mustbuy.each do |buy|
+			Outfit.new(buy,self)
 		end
 
-		while cost_total > 0
-			outfit = Outfit.new.generate(minexp:(cost_total/4), maxexp:cost_total)
-			break if outfit.nil?
-
-			# 不適切なアウトフィットを除外
-			flag = false
-			STYLE_REQUIRED.each do |style,type,name|
-				if !@guest.styles.include?(style) && outfit.send(type) == name
-					flag = true
-				end
-			end
-			next if flag
-
-			cost_total -= outfit.exp
-			self << outfit
+		# 全職業標準（武器防具）
+		Rule::Outfits::Basics.each do |buy|
+			Outfit.new(buy,self)
 		end
 
-		sort_by!{|o|ORDER.index(o.group).to_s+o.type}
+		# 所持していない種類の装備を買う
+		while 3 < @exp && !@not_own.empty?
+			type = @not_own.sample
+			buy = Rule::Outfits::Buy[nil,nil,type,0,@exp]
+			Outfit.new(buy,self)
+		end
+
+		sort_by!{|o|Rule::Outfits::Groups.index(o.group).to_s + o.type}
 	end
-
-	def groups;map(&:group);end
-	def types;map(&:type);end
 end
 
-class Outfit
+class Outfit < Rule::Outfit
+	def initialize(buy,outfits)
+		list = Rule::Outfits::Data.select do |outfit|
+			(!buy.group || outfit.group == buy.group) &&
+			(!buy.type || outfit.type == buy.type) &&
+			(!buy.minexp || outfit.exp >= buy.minexp) &&
+			(!buy.maxexp || outfit.exp <= buy.maxexp)
+		end
 
-	NAME = 1
+		if list.empty?
+			outfits.not_own - [buy.type] if buy.type
+			return nil
+		end
 
-	# :id, :group, :type, :name, :exp, :rule, :page
-	OUTFITS = CSV.table(File.expand_path("../../data/outfits.csv",__FILE__))
+		super(*(list.sample))
 
-	def initialize
-		@outfit = []
+		outfits.not_own -= [type]
+		outfits << self
+
+		outfits.exp -= exp
+
 	end
-
-	def generate(group: nil, type: nil, minexp: 5, maxexp: 30)
-		list = OUTFITS
-		list = list.select{|o|o[:group] == group} if group
-		list = list.select{|o|o[:type] == type} if type
-		list = list.select{|o|o[:exp] >= minexp} if minexp
-		list = list.select{|o|o[:exp] <= maxexp} if maxexp
-		list = OUTFITS.select{|o|o[:exp] <= 5} if list.empty?
-		@outfit = list[rand(list.size)]
-		self
-	end
-
-	def id;@outfit[:id];end
-	def name;@outfit[:name];end
-	def group;@outfit[:group];end
-	def type;@outfit[:type];end
-	def rule;@outfit[:rule];end
-	def page;@outfit[:page];end
-	def exp;@outfit[:exp];end
-	def nil?;@outfit.nil?;end
 
 	def to_s
-		"#{name}（#{rule}#{page}）exp:#{exp}"
+		"#{name}（#{rule}#{page}）exp#{exp}"
 	end
 
 end

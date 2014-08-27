@@ -4,7 +4,7 @@ require "prawn"
 require "sinatra/prawn"
 require "sinatra/reloader" if development?
 require "slim"
-require "./lib/guest.rb"
+require "./lib/guests"
 
 set :prawn, {
 	page_size: "A4",
@@ -16,16 +16,7 @@ set :prawn, {
 	compress: true
 }
 
-name2id = {}
-STYLE_DATA.each_pair do |k,v|
-	name2id[v.name] = k
-end
-
-guests = Array.new(6){Guest.new}
-config = %w(アラシ カタナ カブトワリ ニューロ ヒルコ アヤカシ)
-config.each_with_index do |name,i|
-	guests[i].styles[0].id = name2id[name]
-end
+guests = Guests.new
 
 get "/" do
 	@guests = guests
@@ -33,9 +24,9 @@ get "/" do
 end
 
 get "/config" do
-	@config = config
+	@config = guests.config
 	# @styles = STYLES + %w(近接系 射撃系 ロボ乗り 精神攻撃 社会攻撃 支援系)
-	@styles = STYLE_DATA.values.map(&:name)
+	@styles = Rule::Styles::Names
 	slim :config
 end
 
@@ -43,20 +34,26 @@ get "/config/*/*" do |npc,style|
 	npc = npc.to_i
 	style = style.to_i
 
-	config[npc] = STYLE_DATA[style].name
-	guests[npc].styles[0].id = STYLE_KEYS[style]
-	# guests[npc].skills.change
-	# guests[npc].outifts.change
+	name = Rule::Styles::Data[style].name
+	guests.config[npc] = name
+	guests[npc].styles[0].name = name
+	guests[npc].skills.change
+	guests[npc].outfits.change
+
 	redirect to("/config")
 end
 
 get "/reset" do
-	guests = config.map{|s|Guest.new(s)}
+	guests = Guests.new
 	redirect to("/")
 end
 
 get "/guest/*/styles" do |i|
-	guests[i.to_i].styles.change
+	i = i.to_i
+	guests[i].styles.change
+	guests[i].skills.change
+	guests[i].outfits.change
+	guests[i].age.change
 	redirect to("/")
 end
 
@@ -100,25 +97,3 @@ get "/pdf" do
 	content_type 'application/pdf'
 	prawn :pdf
 end
-
-# __END__
-
-# @@ pdf
-# pdf.font "./font/ipag.ttf"
-
-# pdf.bounding_box([0,720],width:540,height:15) do
-# 	pdf.font_size = 12
-# 	pdf.stroke_bounds
-# 	pdf.text "ゲストデータ", align: :center
-# end
-
-# 3.times do |x|
-# 	2.times do |y|
-# 		pdf.bounding_box([x*180, 705-y*350],width:180,height:350) do
-# 			pdf.font_size = 6
-# 			pdf.stroke_bounds
-# 			pdf.text_box @guests[x*2+y].to_s,at:[10,345],width:160, height:345
-# 		end
-# 	end
-# end
-

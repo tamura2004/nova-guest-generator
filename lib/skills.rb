@@ -1,19 +1,8 @@
 # encoding: utf-8
 require_relative "skill"
-# require_relative "csv_loader"
-require_relative "skill_data"
-require_relative "const"
-
-# include CSVLoader
+require_relative "rule/skills"
 
 class Skills < Array
-	include Const
-
-	# スキルデータ一覧
-	# SKILLS = []
-	# CSVLoader::each_row("style_skills") do |row|
-	# 	SKILLS << Skill.new(row)
-	# end
 
 	# 初期化
 	def initialize(guest)
@@ -21,11 +10,16 @@ class Skills < Array
 		change
 	end
 
+	# スキル取得設定
+	CONFIG = [[5,1],[3,3],[2,2],[1,1]]
+
 	def change
 		clear
 
 		# 無条件取得技能
-		DEFAULT.each do |skill| add Skill.new(skill) end
+		Rule::Skills::Basics.each do |skill|
+			add Skill.new(skill)
+		end
 
 		# 追加取得技能
 		CONFIG.each_with_index do |config,type|
@@ -34,8 +28,7 @@ class Skills < Array
 			num.times do
 				a = my_skills(type)
 				b = a.sample
-				c = b.to_h
-				skill = Skill.new(c)
+				skill = Skill.new(b)
 				skill.add!(level)
 				add(skill)
 			end
@@ -44,8 +37,8 @@ class Skills < Array
 
 	# 所持スタイルから取得可能な技能一覧
 	def my_skills(type)
-		SKILLS.select do |skill|
-			@guest.styles.include? skill.style and skill.type == type
+		Rule::Skills::Feats.select do |skill|
+			@guest.include? skill.sym and skill.type == type
 		end
 	end
 
@@ -64,7 +57,7 @@ class Skills < Array
 	end
 
 	def basic
-		select{|s|s.type == Const::BASIC}
+		select{|s|s.type == Type::BASIC}
 	end
 
 	def not_basic

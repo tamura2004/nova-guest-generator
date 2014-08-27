@@ -71,10 +71,10 @@ class Name
 
 	def to_s
 		case @rand
-		when 0 then "“#{handle}”#{ename} #{myoji}"
-		when 1 then "“#{handle}”#{myoji} #{ename}"
-		when 2 then "“#{handle}”#{myoji} #{ename} #{jname}"
-		when 3 then "“#{handle}”#{ename} #{jname} "
+		when 0 then "“#{handle}”　#{ename} #{myoji}"
+		when 1 then "“#{handle}”　#{myoji} #{ename}"
+		when 2 then "“#{handle}”　#{myoji} #{ename} #{jname}"
+		when 3 then "“#{handle}”　#{ename} #{jname} "
 		end
 	end
 end

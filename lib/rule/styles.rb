@@ -66,6 +66,7 @@ module Rule
 		]
 
 		Syms = Data.members
+		Names = Data.values.map(&:name)
 
 		def self.to_sym(name)
 			Data.find{|v|v.name == name}.sym

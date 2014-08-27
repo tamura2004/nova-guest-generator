@@ -1,20 +1,18 @@
 # encoding: utf-8
-require_relative "named_hash"
 
-class Age < NamedHash
-	def initialize(styles)
-		@styles = styles
-		reset
-		super()
+class Age < Struct.new(:unit,:age)
+	def initialize(guest)
+		@guest = guest
+		change
 	end
 
-	def reset
-		if @styles.include?("アヤカシ")
-			self[:unit] = ["","万","億","兆"].sample
-			self[:age] = (rand(99)+1)*10
+	def change
+		if @guest.include?("アヤカシ")
+			self.unit = ["","万","億","兆"].sample
+			self.age = (rand(99)+1)*10
 		else
-			self[:unit] = ""
-			self[:age] = rand(20)+14
+			self.unit = ""
+			self.age = rand(20)+14
 		end
 	end
 

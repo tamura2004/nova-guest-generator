@@ -1,13 +1,12 @@
 # encoding: utf-8
-require_relative "suit"
-require_relative "const"
-include Const
+# require_relative "suit"
+require_relative "rule/suit"
+# include Const
 
 # トランプのマークの on/off
-class Mark < Suit
-
-	def initialize(reason: false, passion: false, life: false, mundane: false)
-		super(reason,passion,life,mundane)
+class Mark < Rule::Suit
+	def initialize(key)
+		key && self[key] = true
 	end
 
 	def inc!
@@ -36,11 +35,11 @@ class Mark < Suit
 	private
 
 	def marked
-		Const::IDS.select(&method(:[]))
+		members.select(&method(:[]))
 	end
 
 	def unmarked
-		IDS - marked
+		members - marked
 	end
 
 	def to_mark(boolean)

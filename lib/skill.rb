@@ -1,27 +1,18 @@
 # encoding: utf-8
 require_relative "mark"
 require_relative "type"
-require_relative "const"
 
-class Skill
-	attr_accessor :name,:type,:level,:mark,:rule,:page,:no,:style
+class Skill < Struct.new(:rule,:level,:type,:mark)
+	def initialize(rule)
+		self.rule = rule
 
-	def initialize(name:,type:,level:0,mark:{},rule:,page:,no:nil,style:nil,**other)
-
-		@options = { name:name,type:type,level:level,mark:mark,rule:rule,page:page,no:no,style:style }
-
-		@name = name
-		@type = Type.new(type: type, name: name)
-		@level = level
-		@mark = Mark.new(mark).grow_upto!(level)
-		@rule = rule
-		@page = page
-		@no = no
-		@style = style
+		self.mark = Mark.new(rule.mark)
+		self.level = rule.mark ? 1 : 0
+		self.type = Type.new(rule)
 	end
 
 	def inc!
-		@level += 1
+		self.level += 1
 		mark.inc!
 		self
 	end
@@ -34,11 +25,15 @@ class Skill
 	# 全体表示用
 	def to_s
 		"#{mark}〈#{type}#{name}〉#{to_zen(level)}" +
-		(@type != Const::BASIC ? "（#{rule}#{page}）" : "")
+		(type != Type::BASIC ? "（#{rule.rule}#{rule.page}）" : "")
 	end
 
 	def to_hash
 		@options
+	end
+
+	def name
+		rule.name
 	end
 
 	private

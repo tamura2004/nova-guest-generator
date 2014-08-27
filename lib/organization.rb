@@ -77,5 +77,9 @@ class Organization < String
 		self << LIST.sample
 	end
 
+	def change
+		clear
+		self << LIST.sample
+	end
 end
 

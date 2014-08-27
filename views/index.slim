@@ -14,8 +14,11 @@ html
 		.sg-2: p: a href="/text" [text]
 		.sg-2: p: a href="/pdf" [pdf]
 		- @guests.each_with_index do |guest,i|
-			.sg-35: h2: a href="/guest/#{i}/name" #{guest.name}
-			.sg-5
+			.sg-35: h2
+				a href="/guest/#{i}/name" #{guest.name}
+				span &nbsp;&nbsp;&nbsp;
+				a href="/guest/#{i}/styles" #{guest.styles}
+			.sg-6
 				h3 ▼パーソナリティ
 				p
 					| 性別：
@@ -31,19 +34,19 @@ html
 				- guest.abilities.each do |ability|
 					p= ability
 				p ＣＳ：#{guest.abilities.cs}
-			.sg-9
-				h3: a href="guest/#{i}/styles" ▼スタイル
-				p= guest.styles
-				p &nbsp
-				h3: a href="guest/#{i}/skills" ▼一般技能
+			.sg-6
+				/ h3: a href="/guest/#{i}/styles" ▼スタイル
+				/ p= guest.styles
+				/ p &nbsp
+				h3: a href="/guest/#{i}/skills" ▼一般技能
 				- guest.skills.basic.each do |skill|
 					p= skill
-			.sg-9
-				h3: a href="guest/#{i}/skills" ▼特技
+			.sg-10
+				h3: a href="/guest/#{i}/skills" ▼特技
 				- guest.skills.not_basic.each do |skill|
 					p= skill
-			.sg-9
-				h3: a href="guest/#{i}/outfits" ▼アウトフィット
+			.sg-10
+				h3: a href="/guest/#{i}/outfits" ▼アウトフィット
 				- guest.outfits.chunk(&:group).each do |group,outfits|
 					h3 ▼#{group}
 					- outfits.each do |outfit|

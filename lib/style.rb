@@ -19,6 +19,10 @@ class Style < Struct.new(:sym,:fixed,:key,:persona)
 		Rule::Styles::Data[sym].name
 	end
 
+	def name=(name)
+		self.sym = Rule::Styles.to_sym(name)
+	end
+
 	def ability
 		Rule::Styles::Data[sym].ability
 	end
