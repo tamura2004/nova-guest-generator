@@ -14,7 +14,7 @@ describe Skill do
 		end
 
 		context :to_s do
-			it { expect(skill.to_s).to eq "■○○○〈★射撃〉１" }
+			it { expect(skill.to_s).to eq "●○○○〈★射撃〉１" }
 		end
 	end
 end

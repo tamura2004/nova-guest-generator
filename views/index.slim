@@ -13,6 +13,7 @@ html
 		.sg-3: p export ->
 		.sg-2: p: a href="/text" [text]
 		.sg-2: p: a href="/pdf" [pdf]
+		.sg-2: p: a href="/card" [card]
 		- @guests.each_with_index do |guest,i|
 			.sg-35: h2
 				a href="/guest/#{i}/name" #{guest.name}

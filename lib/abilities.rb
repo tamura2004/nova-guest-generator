@@ -22,12 +22,22 @@ class Abilities < Rule::Suit
 		end
 	end
 
+	def to_a
+		suits.map do |s|
+			"#{to_zen s.power}／#{to_zen s.control}"
+		end
+	end
+
 	def reason() suits.reason end
 	def passion() suits.passion end
 	def life() suits.life end
 	def mundane() suits.mundane end
 
 	def cs
-		(reason.power + passion.power + life.power)/2
+		to_zen((reason.power + passion.power + life.power)/2)
+	end
+
+	def to_zen(n)
+		n.to_s.tr('0-9','０-９')
 	end
 end

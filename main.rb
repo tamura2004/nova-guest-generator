@@ -1,6 +1,7 @@
 require "rubygems"
 require "sinatra"
 require "prawn"
+require "prawn/table"
 require "sinatra/prawn"
 require "sinatra/reloader" if development?
 require "slim"
@@ -96,4 +97,10 @@ get "/pdf" do
 	@guests = guests
 	content_type 'application/pdf'
 	prawn :pdf
+end
+
+get "/card" do
+	@guests = guests
+	content_type 'application/pdf'
+	prawn :card
 end

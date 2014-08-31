@@ -5,3 +5,6 @@ guard :rspec, cmd: 'bundle exec rspec -fd' do
   watch('spec/spec_helper.rb')  { "spec" }
 end
 
+guard 'livereload' do
+  watch(%r{views/.+\.prawn$})
+end

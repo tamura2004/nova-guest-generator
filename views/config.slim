@@ -8,11 +8,11 @@ html
 	body: #wrapper: #container
 		.sg-2: p: a href="/" [Home]
 		.sg-35: h2 設定
-		- 6.times do |i|
-			.sg-5
-				h3 Guest #{i}
+		- 9.times do |i|
+			.sg-3
+				h3 Guest #{i+1}
 				- @styles.each_with_index do |style,j|
 					- mark = @config[i] == style ? "■" : "　"
 					p
 						= mark
-						a href="/config/#{i}/#{j}" = style
+						a href="/config/#{i}/#{j}" = style[0,4]

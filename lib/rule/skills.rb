@@ -35,7 +35,7 @@ module Rule
 			Skill[nil,nil,nil,0,"回避",nil,nil,:life],
 			Skill[nil,nil,nil,0,"白兵",nil,nil,:life],
 			Skill[nil,nil,nil,0,"圧力",nil,nil,:mundane],
-			Skill[nil,nil,nil,0,"隠密",nil,nil,:mundane],
+			# Skill[nil,nil,nil,0,"隠密",nil,nil,:mundane],
 		]
 	end
 end
