@@ -104,3 +104,9 @@ get "/card" do
 	content_type 'application/pdf'
 	prawn :card
 end
+
+get "/mcard" do
+	@guests = guests
+	content_type 'application/pdf'
+	prawn :mcard
+end
