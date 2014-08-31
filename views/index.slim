@@ -20,18 +20,20 @@ html
 				a href="/guest/#{i}/name" #{guest.name}
 				span &nbsp;&nbsp;&nbsp;
 				a href="/guest/#{i}/styles" #{guest.styles}
-			.sg-6
-				h3 ▼パーソナリティ
-				p
-					| 性別：
+				span &nbsp;&nbsp;&nbsp;
+				span
 					a href="/guest/#{i}/gender" #{guest.name.gender}
-				p
-					| 年齢：
+				span &nbsp;&nbsp;&nbsp;
+				span
 					a href="/guest/#{i}/age" #{guest.age}
-				p
-					| 所属：
+				span &nbsp;&nbsp;&nbsp;
+				span
 					a href="/guest/#{i}/organization" #{guest.organization}
-				p &nbsp;
+				span &nbsp;
+
+			.sg-6
+				a href="/guest/#{i}/face"
+					img src="#{guest.face}" width="100%" border="1"
 				h3 ▼能力値
 				- guest.abilities.each do |ability|
 					p= ability
@@ -53,4 +55,7 @@ html
 					h3 ▼#{group}
 					- outfits.each do |outfit|
 						p= outfit
-		.sg-35: p 「トーキョーN◎VA The Axlerationは有限会社ファーイースト・アミューズメント・リサーチの著作物です」
+		.sg-35
+			p 「トーキョーN◎VA The Axlerationは有限会社ファーイースト・アミューズメント・リサーチの著作物です」
+			p 『素材提供元：http://www.wtrpg9.com/trpg/』
+

@@ -84,13 +84,13 @@ pdf.instance_eval do
 
 				move_down 4
 
-				w = bounds.width/4
+				w = bounds.width/6
 				sws = [w,w,w,w]
 				table(
 					[
 						["技能","レベル","技能","レベル"]
 					],
-					width: bounds.width,
+					width: bounds.width*2/3,
 					column_widths: sws,
 					cell_style: hs
 					)
@@ -99,13 +99,13 @@ pdf.instance_eval do
 					bs[j] ? bs[j].type.to_s + bs[j].name : ""
 				end
 				levels = 12.times.map do |j|
-					bs[j] ? "(#{bs[j].level})#{bs[j].mark}" : ""
+					bs[j] ? "#{bs[j].mark}" : ""
 				end
 				table(
 					6.times.map{|j|
 						[names[j],levels[j],names[j+6],levels[j+6]]
 					},
-					width: bounds.width,
+					width: bounds.width*2/3,
 					column_widths: sws,
 					cell_style: cs
 					)
@@ -170,6 +170,7 @@ pdf.instance_eval do
 					column_widths: ows,
 					cell_style: cs
 					)
+				image "public/#{guest.face}", at: [116,188]
 			end
 		end
 	end

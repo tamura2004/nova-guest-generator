@@ -63,6 +63,11 @@ get "/guest/*/name" do |i|
 	redirect to("/")
 end
 
+get "/guest/*/face" do |i|
+	guests[i.to_i].face.change
+	redirect to("/")
+end
+
 get "/guest/*/age" do |i|
 	guests[i.to_i].age.change
 	redirect to("/")
