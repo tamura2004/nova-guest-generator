@@ -1,0 +1,12 @@
+/usr/bin/ruby2.2 -r ./siteconf20150513-11782-1vs2jg4.rb extconf.rb 
+creating Makefile
+
+make "DESTDIR=" clean
+
+make "DESTDIR="
+compiling rubymain.cpp
+compiling mapper.cpp
+linking shared-object fastfilereaderext.so
+
+make "DESTDIR=" install
+/usr/bin/install -c -m 0755 fastfilereaderext.so ./.gem.20150513-11782-157gcsc

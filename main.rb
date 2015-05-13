@@ -7,6 +7,8 @@ require "sinatra/reloader" if development?
 require "slim"
 require "./lib/guests"
 
+set :bind, '0.0.0.0'
+
 set :prawn, {
 	page_size: "A4",
 	page_layout: :portrait,

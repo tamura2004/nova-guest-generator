@@ -1,0 +1,8 @@
+web:
+  build: .
+  working_dir: /app/nova-guest-generator
+  command: bundle exec ruby main.rb
+  ports:
+    - 80:4567
+  volumes:
+    - .:/app

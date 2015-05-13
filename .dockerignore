@@ -1,0 +1,9 @@
+.env
+.bundle
+vendor/bundle
+.ruby-version
+.git
+.gitignore
+log
+tmp
+.dockerignore
